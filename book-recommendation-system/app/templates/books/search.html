@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Search: {{ query }} - BookRec{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="search-header">
+        <h1>Search Results</h1>
+        <p>{% if query %}Results for "{{ query }}"{% else %}Enter a search term{% endif %}</p>
+    </div>
+    
+    {% if results %}
+    <div class="results-count">
+        <p>Found {{ results|length }} books</p>
+    </div>
+    <div class="books-grid">
+        {% for book in results %}
+        {% include "components/book_card.html" %}
+        {% endfor %}
+    </div>
+    {% elif query %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+        </div>
+        <h2>No Results Found</h2>
+        <p>We couldn't find any books matching "{{ query }}"</p>
+        <p>Try a different search term or browse our collection</p>
+        <a href="{{ url_for('books.browse') }}" class="btn btn-primary">Browse Books</a>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+        </div>
+        <h2>Start Searching</h2>
+        <p>Enter a book title or author name to find books</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - BookRec{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{ current_user.username[0].upper() }}
+        </div>
+        <h1>{{ current_user.username }}</h1>
+        <p class="profile-email">{{ current_user.email }}</p>
+        <p class="profile-joined">Member since {{ current_user.created_at.strftime('%B %Y') }}</p>
+    </div>
+    
+    <div class="profile-stats">
+        <div class="stat-card">
+            <span class="stat-number">{{ favorites_count }}</span>
+            <span class="stat-label">Favorites</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ to_read_count }}</span>
+            <span class="stat-label">To Read</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ history_count }}</span>
+            <span class="stat-label">Books Viewed</span>
+        </div>
+    </div>
+    
+    <div class="profile-actions">
+        <a href="{{ url_for('recommendations.recommendations') }}" class="btn btn-primary">
+            View My Recommendations
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">
+            Log Out
+        </a>
+    </div>
+    
+    <div class="profile-danger-zone">
+        <h3>Data Management</h3>
+        <p>Clear your data if you want a fresh start with the book catalog.</p>
+        <div class="danger-actions">
+            <button type="button" class="btn btn-danger" onclick="resetAllData()">
+                Reset All My Data
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function resetAllData() {
+    if (confirm('Are you sure you want to reset all your data? This will clear your favorites, to-read list, and browsing history. This action cannot be undone.')) {
+        fetch('/user/reset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('All data has been reset successfully!');
+                window.location.reload();
+            } else {
+                alert('Failed to reset data. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}My Recommendations - BookRec{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>My Recommendations</h1>
+        <p>Personalized book suggestions based on your activity, searches, and preferences</p>
+    </div>
+    
+    {% if book %}
+    <div class="recommendation-source">
+        <p>Recommendations based on: <strong>{{ book.title }}</strong></p>
+        <a href="{{ url_for('books.book_detail', isbn=book.isbn) }}" class="btn btn-small">View Book</a>
+    </div>
+    {% endif %}
+    
+    {% if has_activity or book %}
+    
+        {% if recommended_books %}
+        <section class="rec-section">
+            <h2>Recommended For You</h2>
+            <p class="section-desc">Based on your favorites, searches, and browsing history</p>
+            <div class="books-grid">
+                {% for book in recommended_books %}
+                {% include "components/book_card.html" %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+        
+        {% if recommendations and recommendations.get('content_based') %}
+        <section class="rec-section">
+            <h2>Similar Books</h2>
+            <p class="section-desc">Books similar to the one you selected</p>
+            <div class="books-grid">
+                {% for book in recommendations.content_based %}
+                {% include "components/book_card.html" %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+        
+        {% if recommendations and recommendations.get('collaborative') %}
+        <section class="rec-section">
+            <h2>Readers Also Enjoyed</h2>
+            <p class="section-desc">Books loved by readers with similar taste</p>
+            <div class="books-grid">
+                {% for book in recommendations.collaborative %}
+                {% include "components/book_card.html" %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+        </div>
+        <h2>No Recommendations Yet</h2>
+        <p>Start exploring books, search for topics you like, and add favorites to get personalized recommendations!</p>
+        <div class="empty-actions">
+            <a href="{{ url_for('books.index') }}" class="btn btn-primary">Explore Books</a>
+            <a href="{{ url_for('books.browse') }}" class="btn btn-secondary">Browse All</a>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if popular_books %}
+    <section class="rec-section">
+        <h2>Popular Right Now</h2>
+        <p class="section-desc">Trending books loved by readers</p>
+        <div class="books-grid">
+            {% for book in popular_books %}
+            {% include "components/book_card.html" %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

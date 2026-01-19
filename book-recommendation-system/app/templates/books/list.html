@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Books - BookRec{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Browse Books</h1>
+        <p>Explore our collection</p>
+    </div>
+    
+    {% if recommended_books %}
+    <section class="rec-section" style="margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border);">
+        <h2>Recommended For You</h2>
+        <p class="section-desc">Based on your activity and searches</p>
+        <div class="books-grid">
+            {% for book in recommended_books %}
+            {% include "components/book_card.html" %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    
+    <h2 style="margin-bottom: 24px;">All Books</h2>
+    
+    {% if books %}
+    <div class="books-grid">
+        {% for book in books %}
+        {% include "components/book_card.html" %}
+        {% endfor %}
+    </div>
+    
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('books.browse', page=page-1) }}" class="btn btn-secondary">Previous</a>
+        {% endif %}
+        <span class="page-info">Page {{ page }}</span>
+        <a href="{{ url_for('books.browse', page=page+1) }}" class="btn btn-secondary">Next</a>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No books available</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

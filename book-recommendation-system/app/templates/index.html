@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}BookRec - Discover Your Next Favorite Book{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Discover Your Next Favorite Book</h1>
+        <p>Personalized recommendations based on your reading preferences</p>
+        <form action="{{ url_for('books.search') }}" method="GET" class="hero-search">
+            <div class="hero-search-wrapper">
+                <input type="text" name="q" id="hero-search-input" 
+                       placeholder="Enter a book title, author, or genre..." 
+                       autocomplete="off">
+                <div id="hero-suggestions" class="suggestions"></div>
+            </div>
+            <button type="submit" class="hero-search-btn">Find Books</button>
+        </form>
+    </div>
+</section>
+
+{% if recommended_books %}
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Recommended For You</h2>
+            <p>Based on your activity, searches, and preferences</p>
+        </div>
+        <div class="books-grid">
+            {% for book in recommended_books %}
+            {% include "components/book_card.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Popular Books</h2>
+            <p>Highly rated books loved by readers</p>
+        </div>
+        {% if popular_books %}
+        <div class="books-grid">
+            {% for book in popular_books %}
+            {% include "components/book_card.html" %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No books available. Please check your data files.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="container">
+        <h2>How It Works</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                <h3>Search & Explore</h3>
+                <p>Search for books by title or author and discover new reads</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+                <h3>Save Favorites</h3>
+                <p>Add books to your favorites to get personalized recommendations</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h3>Smart Recommendations</h3>
+                <p>Our AI uses collaborative & content-based filtering to suggest books you'll love</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

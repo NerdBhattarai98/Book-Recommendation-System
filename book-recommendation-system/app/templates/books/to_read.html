@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}To Read - BookRec{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>To Read</h1>
+        <p>Books you've marked to read later</p>
+    </div>
+
+    {% if books %}
+    <div class="books-grid">
+        {% for book in books %}
+        {% include "components/book_card.html" %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Your to-read list is empty.</p>
+        <a href="{{ url_for('books.browse') }}" class="btn btn-primary">Find Books</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

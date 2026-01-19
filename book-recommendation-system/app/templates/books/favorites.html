@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}My Favorites - BookRec{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>My Favorites</h1>
+        <p>Your saved books</p>
+    </div>
+
+    {% if books %}
+    <div class="books-grid">
+        {% for book in books %}
+        {% include "components/book_card.html" %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>You haven't added any favorites yet.</p>
+        <a href="{{ url_for('books.browse') }}" class="btn btn-primary">Browse Books</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+<a href="{{ url_for('books.book_detail', isbn=book.isbn) }}" class="book-card" data-isbn="{{ book.isbn }}">
+    <div class="book-cover">
+        {% if book.image_url %}
+        <img src="{{ book.image_url }}" alt="{{ book.title }}" loading="lazy"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="placeholder-cover" style="display:none;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+        </div>
+        {% else %}
+        <div class="placeholder-cover">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+        </div>
+        {% endif %}
+        <button class="favorite-btn" data-isbn="{{ book.isbn }}" onclick="event.preventDefault(); toggleFavorite('{{ book.isbn }}');">
+            <span class="heart">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </span>
+        </button>
+    </div>
+    <div class="book-info">
+        <h3 class="book-title">{{ book.title[:45] }}{% if book.title|length > 45 %}...{% endif %}</h3>
+        <p class="book-author">{{ book.author }}</p>
+        {% if book.rating or book.avg_rating %}
+        <div class="book-rating">
+            <span class="stars">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24" stroke="#fbbf24" stroke-width="1">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+            </span>
+            <span>{{ "%.1f"|format(book.rating|default(book.avg_rating, true)|float) }}</span>
+            {% if book.num_ratings %}
+            <span class="rating-count">({{ book.num_ratings|int }} ratings)</span>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% if book.genre %}
+        <p class="book-genre">{{ book.genre.split(',')[0][:20] }}</p>
+        {% elif book.year and book.year != 'N/A' %}
+        <p class="book-year">{{ book.year }}</p>
+        {% endif %}
+    </div>
+</a>

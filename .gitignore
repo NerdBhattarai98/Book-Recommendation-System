@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+
+# Ignore large datasets
+book-recommendation-system/data/*.csv
+book-recommendation-system/models/*.pkl
